@@ -16,17 +16,29 @@ class Room:
         if self._left is not None:
             return self._left
 
+    def get_left(self):
+        return self._left
+
     def go_right(self):
         if self._right is not None:
             return self._right
+
+    def get_right(self):
+        return self._right
 
     def go_forward(self):
         if self._forward is not None:
             return self._forward
 
+    def get_forward(self):
+        return self._forward
+
     def go_back(self):
         if self._back is not None:
             return self._back
+
+    def get_back(self):
+        return self._back
 
     def check_open(self):
         return self._entrance.is_unlocked()
