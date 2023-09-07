@@ -1,4 +1,5 @@
 from door import Door
+from message import MessageHandler
 
 class Room:
     def __init__(self, name):
@@ -10,7 +11,7 @@ class Room:
         #self._object1 = object1
         #self._object2 = object2
         self._entrance = Door()
-        self.enter_message = self._name
+        self.enter_message = MessageHandler().set_message(name)
 
     def go_left(self):
         if self._left is not None:
@@ -42,9 +43,6 @@ class Room:
 
     def check_open(self):
         return self._entrance.is_unlocked()
-
-    def set_message(self, message):
-        self.enter_message = message
 
     def read_message(self):
         return self.enter_message

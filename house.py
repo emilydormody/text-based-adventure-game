@@ -33,7 +33,7 @@ class House:
         self.candle_room.set_position(None, None, self.candle, self.bottom_L)
         self.top_L.set_position(None, self.middle, self.library, self.bottom_L)
         self.library.set_position(self.book1, self.book2, None, self.top_L)
-        self.middle.set_position(self.top_L, self.top_R, self.chandelier,None)
+        self.middle.set_position(self.top_L, self.top_R, None, self.chandelier)
         self.top_R.set_position(self.middle, self.vent, self.ghost_room, self.bottom_R)
         self.ghost_room.set_position(None, None, self.balcony, self.top_R)
         self.bottom_R.set_position(self.porch, self.gallery, self.top_R, None)

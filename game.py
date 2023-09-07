@@ -8,9 +8,10 @@ class Game:
         self.items = []
         self.house = House()
         self.current_location = None
-        self.in_house = True
+        self.in_house = False
 
     def take_turn(self):
+        self.current_location.read_message()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
             print()
@@ -44,7 +45,9 @@ class Game:
         print(self.current_location.read_message())
 
     def game_start(self):
-        print("Welcome " + self._player_name + ", it's time for an adventure! \nYou are walking home from "
+        print("In this game the commands are: L for left, R for right, F for forward and B for back. \nThis applies to all choices"
+              " for walking and investigating objects unless stated otherwise. Enjoy!")
+        print("\nWelcome " + self._player_name + ", it's time for an adventure! \nYou are walking home from "
                                        "school one day when you come across a cat up in a tree. \n"
                                        "Would you like to say hello?")
         while True:
@@ -84,11 +87,12 @@ class Game:
                     case "Y":
                         self.house.main_door.unlock()
                         print("The door opened and you head inside to check it out. \nYou walk into the mansion "
-                              "and look around. \nIn front of you is an empty space with a big chandelier "
-                              "hanging over it and a large mirror on the back wall. \nOn your left and your right there are staircases, each of which "
-                              "have a door at both the top and the bottom and a landing halfway up. \nThe door swings closed behind you and you know there is no "
-                              "point in trying to open it.")
+                              "and look around.\nIn front of you is an empty space with a big chandelier hanging over it and a large mirror on the back wall." \
+                       "\nOn your left and your right there are staircases, each of which have a door at both the top " \
+                       "and the bottom and a landing halfway up. \nThe door swings closed behind you and you know there is no point in trying to open it.")
+                        self.in_house = True
                         self.current_location = self.house.porch
+
                         break
                     case "N":
                         print("You were too nervous and decided to head home instead. \nAll night you toss and turn,"
@@ -103,7 +107,9 @@ class Game:
                 print()
                 match unlock:
                     case "Y":
-                        print("The entryway looks the same as it did before.")
+                        print("The entryway looks the same as it did before.\nIn front of you is an empty space with a big chandelier hanging over it and a large mirror on the back wall." \
+                       "\nOn your left and your right there are staircases, each of which have a door at both the top " \
+                       "and the bottom and a landing halfway up. \nThe door swings closed behind you and you know there is no point in trying to open it.")
                         self.current_location = self.house.porch
                         break
                     case "N":
