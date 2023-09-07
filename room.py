@@ -1,14 +1,14 @@
 from door import Door
 
 class Room:
-    def __init__(self, name, left, right, forward, back, object1=None, object2=None):
+    def __init__(self, name):
         self._name = name
-        self._left = left
-        self._right = right
-        self._forward = forward
-        self._back = back
-        self._object1 = object1
-        self._object2 = object2
+        self._left = None
+        self._right = None
+        self._forward = None
+        self._back = None
+        #self._object1 = object1
+        #self._object2 = object2
         self._entrance = Door()
         self.enter_message = self._name
 
@@ -49,4 +49,8 @@ class Room:
     def read_message(self):
         return self.enter_message
 
-
+    def set_position(self,left, right, forward, back):
+        self._left = left
+        self._right = right
+        self._forward = forward
+        self._back = back
