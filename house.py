@@ -1,5 +1,6 @@
 from room import Room
 from item import Item
+from door import Door
 
 class House:
     def __init__(self):
@@ -12,7 +13,6 @@ class House:
         self.balcony = None
         self.portrait1 = None
         self.portrait2 = None
-        self.outside = Room("outside")
         self.top_R = Room("top_R")
         self.ghost_room = Room("ghost_room")
         self.bottom_R = Room("bottom_R")
@@ -23,11 +23,12 @@ class House:
         self.candle_room = Room("candle_room")
         self.bottom_L = Room("bottom_L")
         self.porch = Room("porch")
+        self.main_door = Door()
         self.build_house()
 
 
     def build_house(self):
-        self.porch.set_position(self.bottom_L, self.bottom_R, self.outside, self.mirror)
+        self.porch.set_position(self.bottom_L, self.bottom_R, None, self.mirror)
         self.bottom_L.set_position(self.candle_room, self.porch, self.top_L, None)
         self.candle_room.set_position(None, None, self.candle, self.bottom_L)
         self.top_L.set_position(None, self.middle, self.library, self.bottom_L)
@@ -37,7 +38,6 @@ class House:
         self.ghost_room.set_position(None, None, self.balcony, self.top_R)
         self.bottom_R.set_position(self.porch, self.gallery, self.top_R, None)
         self.gallery.set_position(self.portrait1, self.portrait2, None, self.bottom_R)
-        self.outside.set_position(None, None, self.porch, None)
         self.mirror = Item("mirror")
         self.candle = Item("candle")
         self.book1 = Item("book 1")
