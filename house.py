@@ -4,15 +4,16 @@ from door import Door
 
 class House:
     def __init__(self):
-        self.mirror = None
-        self.candle = None
-        self.book1 = None
-        self.book2 = None
-        self.chandelier = None
-        self.vent = None
-        self.balcony = None
-        self.portrait1 = None
-        self.portrait2 = None
+        self.mirror = Item("mirror")
+        self.candle = Item("candle")
+        self.book1 = Item("book 1")
+        self.book2 = Item("book2")
+        self.chandelier = Item("chandelier")
+        self.vent = Item("vent")
+        self.balcony = Item("balcony")
+        self.portrait1 = Item("portrait1")
+        self.portrait2 = Item("portrait2")
+        self.outside = Room("outside")
         self.top_R = Room("top_R")
         self.ghost_room = Room("ghost_room")
         self.bottom_R = Room("bottom_R")
@@ -38,15 +39,10 @@ class House:
         self.ghost_room.set_position(None, None, self.balcony, self.top_R)
         self.bottom_R.set_position(self.porch, self.gallery, self.top_R, None)
         self.gallery.set_position(self.portrait1, self.portrait2, None, self.bottom_R)
-        self.mirror = Item("mirror")
-        self.candle = Item("candle")
-        self.book1 = Item("book 1")
-        self.book2 = Item("book2")
-        self.chandelier = Item("chandelier")
-        self.vent = Item("vent")
-        self.balcony = Item("balcony")
-        self.portrait1 = Item("portrait1")
-        self.portrait2 = Item("portrait2")
+        self.outside.set_position(None, None, self.porch, None)
+        self.library.lock_door()
+        self.gallery.lock_door()
+        self.ghost_room.lock_door()
 
     def check_candlelight(self):
         if self.library.check_open():

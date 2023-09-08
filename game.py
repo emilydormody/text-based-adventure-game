@@ -9,6 +9,10 @@ class Game:
         self.house = House()
         self.current_location = None
         self.in_house = False
+        self.page1 = False
+        self.page2 = False
+        self.page3 = False
+        self.page4 = False
 
     def take_turn(self):
         if self.current_location.get_name() == "candle":
@@ -16,8 +20,12 @@ class Game:
             return
         elif self.current_location.get_name() == "candle_room":
             print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
+        elif self.current_location.get_name() == "library":
+            self.library()
         else:
-            self.current_location.read_message()
+            print(self.current_location.read_message())
+            if self.current_location.get_name() == "outside":
+                self.front_doors()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
             print()
@@ -48,7 +56,6 @@ class Game:
                         print("You can't go back here.")
                 case _:
                     print("That's not one of the options. \nYou're so silly. \nPlease try again.")
-        print(self.current_location.read_message())
 
     def game_start(self):
         print("In this game the commands are: L for left, R for right, F for forward and B for back. \nThis applies to all choices"
@@ -93,9 +100,7 @@ class Game:
                     case "Y":
                         self.house.main_door.unlock()
                         print("The door opened and you head inside to check it out. \nYou walk into the mansion "
-                              "and look around.\nIn front of you is an empty space with a big chandelier hanging over it and a large mirror on the back wall." \
-                       "\nOn your left and your right there are staircases, each of which have a door at both the top " \
-                       "and the bottom and a landing halfway up. \nThe door swings closed behind you and you know there is no point in trying to open it.")
+                              "and look around.\nThe door swings closed behind you and you know there is no point in trying to open it.")
                         self.in_house = True
                         self.current_location = self.house.porch
 
@@ -113,9 +118,8 @@ class Game:
                 print()
                 match unlock:
                     case "Y":
-                        print("The entryway looks the same as it did before.\nIn front of you is an empty space with a big chandelier hanging over it and a large mirror on the back wall." \
-                       "\nOn your left and your right there are staircases, each of which have a door at both the top " \
-                       "and the bottom and a landing halfway up. \nThe door swings closed behind you and you know there is no point in trying to open it.")
+                        print("The entryway looks the same as it did before.\nThe door swings closed behind you and "
+                              "you know there is no point in trying to open it.")
                         self.current_location = self.house.porch
                         break
                     case "N":
@@ -128,36 +132,78 @@ class Game:
     def candle(self):
         print("The candle sits on a pedestal with three buttons, a green, a blue, and a purple.\n"
               "What would you like to do?")
-        candle = input("Type G to press the green button, B for blue, P for purple, or B to go back: ").upper().strip()
-        print()
-        match candle:
-            case "G":
-                self.house.library.unlock_door()
-                self.house.gallery.lock_door()
-                self.house.ghost_room.lock_door()
-                print("The candle glows bright green and you hear a noise from somewhere else in the house, "
-                      "but you can't tell where it's coming from.")
-            case "B":
-                self.house.library.lock_door()
-                self.house.gallery.lock_door()
-                self.house.ghost_room.unlock_door()
-                print("The candle glows bright blue and you hear a noise from somewhere else in the house, "
-                      "but you can't tell where it's coming from.")
-            case "P":
-                self.house.library.lock_door()
-                self.house.gallery.unlock_door()
-                self.house.ghost_room.lock_door()
-                print("The candle glows bright purple and you hear a noise from somewhere else in the house, "
-                      "but you can't tell where it's coming from.")
-            case "B":
-                self.current_location = self.house.bottom_L
-        if self.current_location == self.house.candle:
-            self.current_location = self.current_location.go_left()
+        while True:
+            candle = input("Type G to press the green button, B for blue, P for purple, or E to go back: ").upper().strip()
+            print()
+            match candle:
+                case "G":
+                    self.house.library.unlock_door()
+                    self.house.gallery.lock_door()
+                    self.house.ghost_room.lock_door()
+                    print("The candle glows bright green and you hear a noise from somewhere else in the house, "
+                          "but you can't tell where it's coming from.\n")
+                case "B":
+                    self.house.library.lock_door()
+                    self.house.gallery.lock_door()
+                    self.house.ghost_room.unlock_door()
+                    print("The candle glows bright blue and you hear a noise from somewhere else in the house, "
+                          "but you can't tell where it's coming from.\n")
+                case "P":
+                    self.house.library.lock_door()
+                    self.house.gallery.unlock_door()
+                    self.house.ghost_room.lock_door()
+                    print("The candle glows bright purple and you hear a noise from somewhere else in the house, "
+                          "but you can't tell where it's coming from.\n")
+                case "E":
+                    self.current_location = self.house.bottom_L
+                    break
+                case _:
+                    self.wrong_answer()
 
     def candle_room(self):
         print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
     def wrong_answer(self):
         print("That's not one of the options. \nYou're so silly. \nPlease try again.")
+
+    def library(self):
+        if self.house.library.check_open():
+            print("You push the door and it opens.\nInside the room is a huge library with shelves of books"
+                  " that reach all the way to the ceiling. \nAs you explore the rows you find a bookshelf with"
+                  " two books hanging out.")
+            print("The books are titled 'The Secret to Solving a Maze' and 'History of Underground Monsters'\n"
+                    "Would you like to read one?")
+            while True:
+                book = input("Type S to read about maze secrets, M to read about monsters, or B to leave the library: ").upper().strip()
+                print()
+                match book:
+                    case "S":
+                        print("You take the book off the shelf and start to read.\nIt's very interesting!")
+                        if not self.page1:
+                            print("As you flip through the pages, a sheet falls out onto the floor.\nIt has some weird scribbles"
+                                  " on it.\nYou aren't sure what it means, but you put it in your pocket for later.")
+                            self.page1 = True
+                            if self.all_pages():
+                                pass #TODO change mirror message
+                    case "M":
+                        print("You take the book off the shelf and start to read.\nIt's very interesting!\nThe book is about "
+                              "an explorer who searched for evidence of monsters living under this very house.\nYou find his "
+                              "research fascinating and you lean up against the book shelf as you read.\nAll of a sudden, "
+                              "the bookshelves separate and you fall backwards into a pitfall :(")
+                        self.lives -= 1
+                        print("You now have "+str(self.lives)+" lives.")
+                        self.current_location = self.house.outside
+                        break
+                    case "B":
+                        self.current_location = self.house.top_L
+                        print(self.current_location.read_message())
+                        break
+        else:
+            print("You push on the door and it won't budge.")
+            self.current_location = self.house.top_L
+
+
+    def all_pages(self):
+        return self.page1 and self.page2 and self.page3 and self.page4
 
 
 

@@ -26,8 +26,9 @@ class MessageHandler:
                 return "You follow the hallway and come to at a railing looking over the room you first entered when"\
                   " you came into the house. \nBehind you there is a chandelier, hanging over the center of the house. \n" \
                        "The hallway continues to the left and the right, but the right is significantly darker."
-            case "candle_room":
-                return ""
+            case "outside":
+                return "You find yourself outside the main doors of the house."
+
 
 
 
