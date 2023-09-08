@@ -12,9 +12,12 @@ class Game:
 
     def take_turn(self):
         if self.current_location.get_name() == "candle":
-            self.candle_room()
+            self.candle()
             return
-        self.current_location.read_message()
+        elif self.current_location.get_name() == "candle_room":
+            print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
+        else:
+            self.current_location.read_message()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
             print()
@@ -122,7 +125,7 @@ class Game:
                     case _:
                         self.wrong_answer()
 
-    def candle_room(self):
+    def candle(self):
         print("The candle sits on a pedestal with three buttons, a green, a blue, and a purple.\n"
               "What would you like to do?")
         candle = input("Type G to press the green button, B for blue, P for purple, or B to go back: ").upper().strip()
@@ -147,47 +150,15 @@ class Game:
                 print("The candle glows bright purple and you hear a noise from somewhere else in the house, "
                       "but you can't tell where it's coming from.")
             case "B":
-                self.current_location = self.house.candle_room
+                self.current_location = self.house.bottom_L
+        if self.current_location == self.house.candle:
+            self.current_location = self.current_location.go_left()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def candle_room(self):
+        print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
     def wrong_answer(self):
         print("That's not one of the options. \nYou're so silly. \nPlease try again.")
+
+
 
 

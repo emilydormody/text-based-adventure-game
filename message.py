@@ -1,6 +1,6 @@
 class MessageHandler:
-    def __init__(self, house):
-        self.house = house
+    def __init__(self):
+        pass
 
     def set_message(self, obj):
         match obj:
@@ -27,7 +27,8 @@ class MessageHandler:
                   " you came into the house. \nBehind you there is a chandelier, hanging over the center of the house. \n" \
                        "The hallway continues to the left and the right, but the right is significantly darker."
             case "candle_room":
-                return "You try the door and it swings open! Inside the room is a lit candle that is glowing a bright" + self.house.check_candlelight() + " light."
+                return ""
+
 
 
 

@@ -13,16 +13,16 @@ class House:
         self.balcony = None
         self.portrait1 = None
         self.portrait2 = None
-        self.top_R = Room("top_R", self)
-        self.ghost_room = Room("ghost_room", self)
-        self.bottom_R = Room("bottom_R", self)
-        self.gallery = Room("gallery", self)
-        self.middle = Room("middle", self)
-        self.library = Room("library", self)
-        self.top_L = Room("top_L", self)
-        self.candle_room = Room("candle_room", self)
-        self.bottom_L = Room("bottom_L", self)
-        self.porch = Room("porch", self)
+        self.top_R = Room("top_R")
+        self.ghost_room = Room("ghost_room")
+        self.bottom_R = Room("bottom_R")
+        self.gallery = Room("gallery")
+        self.middle = Room("middle")
+        self.library = Room("library")
+        self.top_L = Room("top_L")
+        self.candle_room = Room("candle_room")
+        self.bottom_L = Room("bottom_L")
+        self.porch = Room("porch")
         self.main_door = Door()
         self.build_house()
 
