@@ -11,6 +11,9 @@ class Game:
         self.in_house = False
 
     def take_turn(self):
+        if self.current_location.get_name() == "candle":
+            self.candle_room()
+            return
         self.current_location.read_message()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
@@ -119,6 +122,33 @@ class Game:
                     case _:
                         self.wrong_answer()
 
+    def candle_room(self):
+        print("The candle sits on a pedestal with three buttons, a green, a blue, and a purple.\n"
+              "What would you like to do?")
+        candle = input("Type G to press the green button, B for blue, P for purple, or B to go back: ").upper().strip()
+        print()
+        match candle:
+            case "G":
+                self.house.library.unlock_door()
+                self.house.gallery.lock_door()
+                self.house.ghost_room.lock_door()
+                print("The candle glows bright green and you hear a noise from somewhere else in the house, "
+                      "but you can't tell where it's coming from.")
+            case "B":
+                self.house.library.lock_door()
+                self.house.gallery.lock_door()
+                self.house.ghost_room.unlock_door()
+                print("The candle glows bright blue and you hear a noise from somewhere else in the house, "
+                      "but you can't tell where it's coming from.")
+            case "P":
+                self.house.library.lock_door()
+                self.house.gallery.unlock_door()
+                self.house.ghost_room.lock_door()
+                print("The candle glows bright purple and you hear a noise from somewhere else in the house, "
+                      "but you can't tell where it's coming from.")
+            case "B":
+                self.current_location = self.house.candle_room
+
 
 
 
@@ -159,3 +189,5 @@ class Game:
 
     def wrong_answer(self):
         print("That's not one of the options. \nYou're so silly. \nPlease try again.")
+
+

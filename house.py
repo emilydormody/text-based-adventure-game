@@ -13,16 +13,16 @@ class House:
         self.balcony = None
         self.portrait1 = None
         self.portrait2 = None
-        self.top_R = Room("top_R")
-        self.ghost_room = Room("ghost_room")
-        self.bottom_R = Room("bottom_R")
-        self.gallery = Room("gallery")
-        self.middle = Room("middle")
-        self.library = Room("library")
-        self.top_L = Room("top_L")
-        self.candle_room = Room("candle_room")
-        self.bottom_L = Room("bottom_L")
-        self.porch = Room("porch")
+        self.top_R = Room("top_R", self)
+        self.ghost_room = Room("ghost_room", self)
+        self.bottom_R = Room("bottom_R", self)
+        self.gallery = Room("gallery", self)
+        self.middle = Room("middle", self)
+        self.library = Room("library", self)
+        self.top_L = Room("top_L", self)
+        self.candle_room = Room("candle_room", self)
+        self.bottom_L = Room("bottom_L", self)
+        self.porch = Room("porch", self)
         self.main_door = Door()
         self.build_house()
 
@@ -47,5 +47,15 @@ class House:
         self.balcony = Item("balcony")
         self.portrait1 = Item("portrait1")
         self.portrait2 = Item("portrait2")
+
+    def check_candlelight(self):
+        if self.library.check_open():
+            return "green"
+        elif self.ghost_room.check_open():
+            return "blue"
+        elif self.gallery.check_open():
+            return "purple"
+        else:
+            return "white"
 
 # left, right, forward, back, entrance, object1, object2=None
