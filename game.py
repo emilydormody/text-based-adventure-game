@@ -9,10 +9,7 @@ class Game:
         self.house = House()
         self.current_location = None
         self.in_house = False
-        self.page1 = False
-        self.page2 = False
-        self.page3 = False
-        self.page4 = False
+        self.page_count = 0
 
     def take_turn(self):
         if self.current_location.get_name() == "candle":
@@ -22,6 +19,8 @@ class Game:
             print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
         elif self.current_location.get_name() == "library":
             self.library()
+        elif self.current_location.get_name() == "chandelier":
+            self.chandelier()
         else:
             print(self.current_location.read_message())
             if self.current_location.get_name() == "outside":
@@ -178,10 +177,10 @@ class Game:
                 match book:
                     case "S":
                         print("You take the book off the shelf and start to read.\nIt's very interesting!")
-                        if not self.page1:
+                        if not self.house.book1.page_found():
                             print("As you flip through the pages, a sheet falls out onto the floor.\nIt has some weird scribbles"
                                   " on it.\nYou aren't sure what it means, but you put it in your pocket for later.")
-                            self.page1 = True
+                            self.house.book1.take_page()
                             if self.all_pages():
                                 pass #TODO change mirror message
                     case "M":
@@ -203,7 +202,18 @@ class Game:
 
 
     def all_pages(self):
-        return self.page1 and self.page2 and self.page3 and self.page4
+        return self.page_count == 4
+
+    def chandelier(self):
+        print("The chandelier glistens in front of you.\nHowever, the lights on one side aren't working.")
+        if self.house.chandelier.has_page():
+            print("You spin the chandelier around to check it out, but you see nothing out of the ordinary.\n"
+                  "You don't really know anything about electricity, so you leave it be.")
+        else:
+            print("You spin the chandelier around and you find that there is a piece of paper tucked into it!\n"
+                  "The paper is covered in illegible scribbles, but you decide to hold onto it just in case.")
+            self.house.chandelier.take_page()
+        self.current_location = self.house.middle
 
 
 
