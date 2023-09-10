@@ -23,6 +23,9 @@ class Game:
             self.vent()
         elif self.current_location.get_name() == "chandelier":
             self.chandelier()
+        elif self.current_location.get_name() == "ghost_room" and not self.house.ghost_room.check_open():
+            print("You push on the door but it is way too heavy. \nYour arms get tired of pushing so you give up.")
+            self.current_location = self.house.top_R
         else:
             print(self.current_location.read_message())
         if self.current_location.get_name() == "outside":

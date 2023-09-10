@@ -28,6 +28,11 @@ class MessageHandler:
                        "The hallway continues to the left and the right, but the right is significantly darker."
             case "outside":
                 return "You find yourself outside the main doors of the house."
+            case "ghost_room":
+                return "Even though the door looks heavy, you manage to push it open quite easily.\nYou enter a room full"\
+                      " of white sheets, each of them with eyes drawn on, so that they look like ghosts hanging from "\
+                      "the ceiling.\nAt the back of the room you see another door with a round window in it.\nBehind you"\
+                      " is the door you came in from."
 
 
 
