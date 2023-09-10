@@ -1,17 +1,19 @@
 from room import Room
 from item import Item
+from pageholder import PageHolder
 from door import Door
+from vent import Vent
 
 class House:
     def __init__(self):
         self.mirror = Item("mirror")
         self.candle = Item("candle")
-        self.book1 = Item("book 1")
+        self.book1 = PageHolder("book 1")
         self.book2 = Item("book2")
-        self.chandelier = Item("chandelier")
-        self.vent = Item("vent")
-        self.balcony = Item("balcony")
-        self.portrait1 = Item("portrait1")
+        self.chandelier = PageHolder("chandelier")
+        self.vent = Vent("vent")
+        self.balcony = PageHolder("balcony")
+        self.portrait1 = PageHolder("portrait1")
         self.portrait2 = Item("portrait2")
         self.outside = Room("outside")
         self.top_R = Room("top_R")
@@ -40,9 +42,7 @@ class House:
         self.bottom_R.set_position(self.porch, self.gallery, self.top_R, None)
         self.gallery.set_position(self.portrait1, self.portrait2, None, self.bottom_R)
         self.outside.set_position(None, None, self.porch, None)
-        self.library.lock_door()
-        self.gallery.lock_door()
-        self.ghost_room.lock_door()
+        self.lock_all_doors()
 
     def check_candlelight(self):
         if self.library.check_open():
@@ -53,5 +53,10 @@ class House:
             return "purple"
         else:
             return "white"
+
+    def lock_all_doors(self):
+        self.library.lock_door()
+        self.gallery.lock_door()
+        self.ghost_room.lock_door()
 
 # left, right, forward, back, entrance, object1, object2=None

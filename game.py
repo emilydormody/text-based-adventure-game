@@ -19,12 +19,15 @@ class Game:
             print("You try the door and it swings open! Inside the room is a lit candle that is glowing a bright " + self.house.check_candlelight() + " light.")
         elif self.current_location.get_name() == "library":
             self.library()
+        elif self.current_location.get_name() == "vent":
+            self.vent()
         elif self.current_location.get_name() == "chandelier":
             self.chandelier()
         else:
             print(self.current_location.read_message())
-            if self.current_location.get_name() == "outside":
-                self.front_doors()
+        if self.current_location.get_name() == "outside":
+            print(self.current_location.read_message())
+            self.front_doors()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
             print()
@@ -206,14 +209,29 @@ class Game:
 
     def chandelier(self):
         print("The chandelier glistens in front of you.\nHowever, the lights on one side aren't working.")
-        if self.house.chandelier.has_page():
+        if self.current_location.has_page():
             print("You spin the chandelier around to check it out, but you see nothing out of the ordinary.\n"
                   "You don't really know anything about electricity, so you leave it be.")
         else:
             print("You spin the chandelier around and you find that there is a piece of paper tucked into it!\n"
                   "The paper is covered in illegible scribbles, but you decide to hold onto it just in case.")
-            self.house.chandelier.take_page()
+            self.current_location.take_page()
         self.current_location = self.house.middle
+
+    def vent(self):
+        if self.current_location.bats():
+            print("When you open the vent, a stream of bats come flying out and knock you to the ground.")
+            self.lives -= 1
+            print("You now have " + str(self.lives) + " lives.")
+            self.current_location = self.house.outside
+        elif self.current_location.has_key():
+            print("You reach into the vent and pull out a key! \nThis must belong to a door somewhere.")
+            self.current_location.take_key()
+            self.current_location = self.house.top_R
+        else:
+            print("You poke around with your hand but the vent has already been emptied.")
+            self.current_location = self.house.top_R
+
 
 
 
