@@ -26,10 +26,20 @@ class Game:
         elif self.current_location.get_name() == "ghost_room" and not self.house.ghost_room.check_open():
             print("You push on the door but it is way too heavy. \nYour arms get tired of pushing so you give up.")
             self.current_location = self.house.top_R
+        elif self.current_location.get_name() == "balcony":
+            if self.house.check_vent():
+                print("You head over to the door and peer out the window.\nYou can see the huge forest that lies behind the"
+                 " mansion.\nYou pull on the handle but the door is locked.\nYou try the key you used to enter the house"
+                  " but no luck.")
+                self.current_location = self.house.ghost_room
+            else:
+                self.balcony()
+        elif self.current_location.get_name() == "gallery":
+            self.gallery()
         else:
             print(self.current_location.read_message())
         if self.current_location.get_name() == "outside":
-            print(self.current_location.read_message())
+            print(self.current_location.read_message()) 
             self.front_doors()
         while True:
             direction = input(str("Where would you like to explore: ")).upper()
@@ -96,6 +106,9 @@ class Game:
         self.front_doors()
 
     def front_doors(self):
+        self.house.library.lock_door()
+        self.house.gallery.lock_door()
+        self.house.ghost_room.lock_door()
         while True:
             if not self.house.main_door.is_unlocked():
                 print("Would you like to try your key?")
@@ -108,7 +121,6 @@ class Game:
                               "and look around.\nThe door swings closed behind you and you know there is no point in trying to open it.")
                         self.in_house = True
                         self.current_location = self.house.porch
-
                         break
                     case "N":
                         print("You were too nervous and decided to head home instead. \nAll night you toss and turn,"
@@ -202,6 +214,8 @@ class Game:
                         self.current_location = self.house.top_L
                         print(self.current_location.read_message())
                         break
+                    case _:
+                        self.wrong_answer()
         else:
             print("You push on the door and it won't budge.")
             self.current_location = self.house.top_L
@@ -219,6 +233,8 @@ class Game:
             print("You spin the chandelier around and you find that there is a piece of paper tucked into it!\n"
                   "The paper is covered in illegible scribbles, but you decide to hold onto it just in case.")
             self.current_location.take_page()
+            if self.all_pages():
+                pass #TODO change mirror message
         self.current_location = self.house.middle
 
     def vent(self):
@@ -235,7 +251,61 @@ class Game:
             print("You poke around with your hand but the vent has already been emptied.")
             self.current_location = self.house.top_R
 
-
-
+    def balcony(self):
+            print("You try the key you found in the vent and the door opens!\nYou head outside onto the balcony "
+                    "that overlooks the forest.")
+            print("Out on the balcony you find a box similar to the one you found at the start of your adventure.")
+            if self.current_location.has_page():
+                print("You open the box and you find a tattered piece of paper.\nIt is so dirty you can barely make out"
+                    " what is on it.\nJust in case, you tuck it away in your pocket.")
+                self.current_location.take_page()
+                if self.all_pages():
+                    pass #TODO change mirror message
+            else:
+                print("You open the book to inspect it but you find that it is empty.\nMaybe you've checked it already, "
+                    "or maybe its contents were stolen by the cat.")
+            print("You take a minute to enjoy the beautiful view before heading back inside.")
+            self.current_location = self.house.ghost_room
+                
+    def gallery(self):
+        print("You pull the curtain aside to check what's behind it.")
+        if self.house.gallery.check_open():
+            print("There appears to be another room!\nYou enter the room to find a dark hallway lined with odd looking"
+                    " portraits.\nThe whole room is lit with a purple light.")
+            print("Two of the portraits stick out to you, one that depicts an vampire with teeth almost down to his chin, "
+              "and one of a girl with an alligator lying across her shoulders. \nWould you like to take a closer look?")
+        while True:
+            picture = input("Type V to look at the vampire portrait, A to look at the girl with an alligator, or B to "
+                            "exit the room: ").upper().strip()
+            print()
+            match picture:
+                case "V":
+                    if not self.house.portrait2.check_fallen():
+                        if randint(0,1) == 1:
+                            print("As you lean in to get a closer look at the portrait, you hear a creak, and then it falls on "
+                                "top of you, and you get crushed.")
+                            self.house.portrait2.fall_down()
+                            self.lives -= 1
+                            print("You now have " + str(self.lives) + " lives.")
+                            self.current_location = self.house.outside
+                            break
+                    print("You take a closer look at the vampire.\nYou have no idea whether his teeth are real or fake, but "
+                    "you can imagine they might make things difficult.")
+                case"A":
+                    print("The girl doesn't seem alarmed by the alligator, so you assume it must be her pet.")
+                    if self.current_location.has_page():
+                        print("Upon closer inspection you see that there is a piece of paper tucked into the top corner of"
+                            "the frame.\nYou take it out and look at it.\nThe writing on it looks unreadable, and it is"
+                            " too dark in the room to even try.\nYou tuck it into your pocket so you can give it a closer"
+                            " look later.")
+                        self.current_location.take_page()
+                        if self.all_pages():
+                            pass #TODO change mirror message
+                case "B":
+                        self.current_location = self.house.bottom_R
+                        print(self.current_location.read_message())
+                        break
+                case _:
+                    self.wrong_answer()
 
 

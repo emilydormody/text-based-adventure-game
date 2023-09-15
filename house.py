@@ -3,6 +3,7 @@ from item import Item
 from pageholder import PageHolder
 from door import Door
 from vent import Vent
+from portrait import Portrait
 
 class House:
     def __init__(self):
@@ -14,7 +15,7 @@ class House:
         self.vent = Vent("vent")
         self.balcony = PageHolder("balcony")
         self.portrait1 = PageHolder("portrait1")
-        self.portrait2 = Item("portrait2")
+        self.portrait2 = Portrait("portrait2")
         self.outside = Room("outside")
         self.top_R = Room("top_R")
         self.ghost_room = Room("ghost_room")
@@ -58,5 +59,8 @@ class House:
         self.library.lock_door()
         self.gallery.lock_door()
         self.ghost_room.lock_door()
+
+    def check_vent(self):
+        return self.vent.has_key()
 
 # left, right, forward, back, entrance, object1, object2=None
