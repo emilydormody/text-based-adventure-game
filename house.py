@@ -7,7 +7,7 @@ from portrait import Portrait
 
 class House:
     def __init__(self):
-        self.mirror = Item("mirror")
+        self.mirror = Room("mirror")
         self.candle = Item("candle")
         self.book1 = PageHolder("book 1")
         self.book2 = Item("book2")

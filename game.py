@@ -1,5 +1,6 @@
 from house import House
 from random import randint
+import datetime
 
 class Game:
     def __init__(self, player_name):
@@ -7,6 +8,7 @@ class Game:
         self.lives = 3
         self.items = []
         self.house = House()
+        self.game_start = datetime.datetime.now()
         self.current_location = None
         self.in_house = False
         self.page_count = 0
@@ -36,6 +38,14 @@ class Game:
                 self.balcony()
         elif self.current_location.get_name() == "gallery":
             self.gallery()
+        elif self.current_location.get_name() == "mirror":
+            if self.current_location.check_open():
+                print("You examine the mirror. \nIt is too dark to see your reflection properly, but it"
+                    " appears to be a normal mirror. \nNothing special. \nYou return to the entryway.")
+                self.current_location = self.house.porch
+            else:
+                self.tunnel()
+                return
         else:
             print(self.current_location.read_message())
         if self.current_location.get_name() == "outside":
@@ -106,9 +116,7 @@ class Game:
         self.front_doors()
 
     def front_doors(self):
-        self.house.library.lock_door()
-        self.house.gallery.lock_door()
-        self.house.ghost_room.lock_door()
+        self.house.lock_all_doors()
         while True:
             if not self.house.main_door.is_unlocked():
                 print("Would you like to try your key?")
@@ -200,7 +208,7 @@ class Game:
                                   " on it.\nYou aren't sure what it means, but you put it in your pocket for later.")
                             self.house.book1.take_page()
                             if self.all_pages():
-                                pass #TODO change mirror message
+                                self.house.mirror.unlock_door()
                     case "M":
                         print("You take the book off the shelf and start to read.\nIt's very interesting!\nThe book is about "
                               "an explorer who searched for evidence of monsters living under this very house.\nYou find his "
@@ -234,7 +242,7 @@ class Game:
                   "The paper is covered in illegible scribbles, but you decide to hold onto it just in case.")
             self.current_location.take_page()
             if self.all_pages():
-                pass #TODO change mirror message
+                self.house.mirror.unlock_door()
         self.current_location = self.house.middle
 
     def vent(self):
@@ -260,7 +268,7 @@ class Game:
                     " what is on it.\nJust in case, you tuck it away in your pocket.")
                 self.current_location.take_page()
                 if self.all_pages():
-                    pass #TODO change mirror message
+                    self.house.mirror.unlock_door()
             else:
                 print("You open the book to inspect it but you find that it is empty.\nMaybe you've checked it already, "
                     "or maybe its contents were stolen by the cat.")
@@ -300,12 +308,27 @@ class Game:
                             " look later.")
                         self.current_location.take_page()
                         if self.all_pages():
-                            pass #TODO change mirror message
+                            self.house.mirror.unlock_door()
                 case "B":
                         self.current_location = self.house.bottom_R
                         print(self.current_location.read_message())
                         break
                 case _:
                     self.wrong_answer()
+    
+    def tunnel(self):
+        print("The mirror doesn't look very much like a mirror.\nIn fact, it almost looks see through.\nYou look behind"
+            " the mirror and you find a hidden tunnel!\nYou decide to crawl through and you find youself in a cave like"
+            " room.\nThe room is empty except an open book sitting on a pedestal.\nYou are curious about the book and"
+            " you flip through the pages.\nThey appear similar to the ones you've been collecting since you've been in"
+            " the house.\nAt the end of the book you find that there appear to be pages ripped out.\nYou check the "
+            "pages in your pockets to find they are a perfect match!\nThe book glows a bright light as the pages "
+            "reattach themselves.\nThe writing becomes legible, and it tells you the story of the mansion you just "
+            "explored.")
+        self.in_house = False
 
-
+    def end_game(self):
+        time = datetime.datetime.now() - self.game_start
+        time = time.stftime("%H:%M:%S")
+        print("Congratulations! You bet the game!")
+        print("Play Time: " + str(time))
